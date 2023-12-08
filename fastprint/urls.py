@@ -27,11 +27,12 @@ urlpatterns = [
     path('api/v1/products/post/', views.create_product),
     path('api/v1/products/<int:pk>/', views.delete_product),
     path('api/v1/products/<int:pk>/', views.update_product),
-    
+    path('api/v1/products/detail/<int:pk>/', views.get_detail_product),
+        
     # categorys
     path('api/v1/categorys/', views.get_category_list),
-    path('api/v1/categorys/', views.create_category),
+    path('api/v1/categorys/post/', views.create_category),
     
     # status
-    path('api/v1/status/', views.get_status_list)
+    path('api/v1/status/', views.get_status_list),
 ]

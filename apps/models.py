@@ -18,8 +18,8 @@ class Produk(models.Model):
     id_produk= models.AutoField(primary_key=True)
     nama_produk= models.CharField(max_length=255, null = False)
     harga= models.DecimalField(max_digits=10, decimal_places=2, null = False)
-    kategori= models.ForeignKey(Kategori, on_delete=models.CASCADE)
-    status= models.ForeignKey(Status, on_delete=models.CASCADE)
+    kategori= models.ForeignKey(Kategori, on_delete=models.SET_NULL, null=True, blank=True, default=None)
+    status= models.ForeignKey(Status, on_delete=models.SET_NULL, null=True, blank=True, default=None)
     created_at= models.DateTimeField(default=timezone.now)
     updated_at= models.DateTimeField(default=timezone.now)
     
