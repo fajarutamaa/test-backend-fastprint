@@ -11,7 +11,7 @@ from .serializers import ProductSerializer, CategorySerializer, StatusSerializer
 def get_products_list(request):
     products = Produk.objects.all()
     serializer = ProductSerializer(products, many=True)
-    return JsonResponse({'data':serializer.data}, {'message': 'success'}, safe=False)
+    return JsonResponse({'message': 'success','data':serializer.data}, safe=False)
 
 @api_view(['POST'])
 def create_product(request):
@@ -46,4 +46,27 @@ def update_product(request, pk):
     
     return Response({'message': 'invalid method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
         
-         
+@api_view(['GET'])
+def get_category_list(request):
+    categorys = Kategori.objects.all()
+    serializer = CategorySerializer(categorys, many=True)
+    return JsonResponse({'message': 'success', 'data':serializer.data}, safe=False)
+
+@api_view(['POST'])
+def create_category(request):
+    if request.method == 'POST':
+        serializer = CategorySerializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, {'message': 'success'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    return Response({'message': 'invalid method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        
+
+@api_view(['GET'])
+def get_status_list(request):
+    status = Status.objects.all()
+    serializer = StatusSerializer(status, many=True)
+    return JsonResponse({'message': 'success', 'data':serializer.data}, safe=False)
