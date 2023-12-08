@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import sentry_sdk
 from dotenv import load_dotenv
+from sentry_sdk.integrations.django import DjangoIntegration
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -29,6 +31,16 @@ SECRET_KEY = 'django-insecure--6)@q=jo7i!^z$z2j!djgm*!a$1)se%6p0*$hf1edwz@2sv^w!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+sentry_sdk.init(
+    dsn=os.getenv('SENTRY_DSN'),
+   integrations=[
+        	DjangoIntegration(),
+   	],
+   	 traces_sample_rate=1.0,
+    	send_default_pii=True,
+    	environment='dev'
+)
 
 
 # Application definition
