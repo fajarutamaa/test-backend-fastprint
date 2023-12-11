@@ -17,11 +17,11 @@ class Status(models.Model):
 class Produk(models.Model):
     id_produk= models.AutoField(primary_key=True)
     nama_produk= models.CharField(max_length=255, null = False)
-    harga= models.DecimalField(max_digits=10, decimal_places=2, null = False)
-    kategori= models.ForeignKey(Kategori, on_delete=models.SET_NULL, null=True, blank=True, default=None)
-    status= models.ForeignKey(Status, on_delete=models.SET_NULL, null=True, blank=True, default=None)
+    harga= models.DecimalField(max_digits=10, decimal_places=0, null = False)
+    kategori= models.ForeignKey(Kategori, on_delete=models.SET_DEFAULT,  default=None)
+    status= models.ForeignKey(Status, on_delete=models.SET_DEFAULT,  default=None)
     created_at= models.DateTimeField(default=timezone.now)
-    updated_at= models.DateTimeField(default=timezone.now)
+    updated_at= models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return self.nama_produk

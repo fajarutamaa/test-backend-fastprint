@@ -1,0 +1,103 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+h2 {
+    color: #716b95;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+form {
+    max-width: 400px;
+    width: 100%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px;
+    border: 2px solid #efefef;
+}
+
+label {
+    display: block;
+    font-size: 16px;
+    font-weight: 510;
+    margin-bottom: 9px;
+    color: #716b95;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.icon-button .material-icons {
+    margin-right: 10px;
+    text-align: center;
+}
+
+.button-text {
+    flex-grow: 0;
+}
+
+.icon-button {
+    background-color: #6d5bd0;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button:hover {
+    background-color: #5f50b1;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #2980b9;
+}
+
+@media only screen and (max-width: 600px) {
+    form {
+        margin: 10px;
+    }
+}

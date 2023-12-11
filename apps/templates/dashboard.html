@@ -1,0 +1,76 @@
+<!-- templates/dashboard.html -->
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Daftar Produk</title>
+        <link rel="stylesheet" href="{% static "css/dashboard.css" %}">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body>
+    <h1>Data Produk</h1>
+   
+
+    <table>
+            <thead>
+                <tr>
+                    <th>NO </th>
+                    <th>ID PRODUK</th>
+                    <th>NAMA PRODUK</th>
+                    <th>HARGA</th>
+                    <th>KATEGORI</th>
+                    <th>STATUS</th>
+                    <th>OPSI</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ product.id_produk }}</td>
+                        <td>{{ product.nama_produk }}</td>
+                        <td>{{ product.harga }}</td>
+                        <td>{{ product.kategori }}</td>
+                        <td>{{ product.status }}</td>
+                        <td>
+                            <a href="/api/v1/products/update/{{ product.id_produk }}/" class="custom-btn-edit">
+                                <span class="button-text">Edit</span>
+                            </a>  
+                            <a href="/api/v1/products/{{ product.id_produk }}/" class="custom-btn-delete" onclick="return confirm('Apakah anda yakin menghapus produk ini?')">
+                                <span class="button-text">Hapus</span>
+                            </a>  
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="no-record">
+                            No Record Found!
+                        </td>
+                    </tr>
+                    {% endfor %}  
+                </tbody>  
+            </table>  
+            <br>  
+            <br>  
+            
+            <center>
+                <a href="/api/v1/products/post/" class="custom-btn-add">
+                    <span class="material-icons">add</span>
+                    Tambah Produk
+                </a>
+            </center>
+
+
+            <a href="/" class="custom-btn-back">
+                <span class="material-icons">arrow_back_ios_new</span>
+                Beranda
+            </a>
+
+            </body>  
+            </html>  

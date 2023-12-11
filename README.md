@@ -1,6 +1,8 @@
 [![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://github.com/fajarutamaa/test-backend-fastprint/blob/main/LICENSE)
 
-## test-backend-fastprint
+## Introduction
+
+This project implements a product recap flow using Django and the Django REST framework. Its primary objectives are product input, product editing, and product recapitulation. The project utilizes various Python packages to facilitate efficient development and functionality. For logging and monitoring, Sentry.io provides support for this project.
 
 ## Installation Guide
 
@@ -46,9 +48,19 @@ python manage.py runserver
 
 **Note:** Create an `.env` file in your project root folder and add your variables. See `.env.example` for assistance.
 
+## Basic Usage
+
+This project running on base url `http://127.0.0.1:8000` with api endpoints as follows:
+
+| Methods | URLs                                | Actions                                   |
+| ------- | ----------------------------------- | ----------------------------------------- |
+| GET     | /admin/                             | login as admin (super user)               |
+| GET     | /                                   | Get all product with status 'siap dijual' |
+| GET     | /api/v1/products/                   | Get all products                          |
+| POST    | /api/v1/products/post/              | Create a product                          |
+| POST    | /api/v1/products/update/:id_produk/ | Update a product                          |
+| DELETE  | /api/v1/products/:id_produk/        | Delete a product                          |
 
 ## License
 
 This project is available for use under the BSD 2-Clause License.
-
-
