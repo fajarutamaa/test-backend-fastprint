@@ -1,8 +1,11 @@
-from django.shortcuts import get_object_or_404, render
-from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpResponse, JsonResponse
+from django.views import View
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+import sweetify
+from apps.forms import ProdukForm
 from .models import Produk, Kategori, Status
 from sentry_sdk import capture_exception
 from .serializers import (CreateProductSerializer, ViewsProductSerializer, CategorySerializer, StatusSerializer)
@@ -12,20 +15,27 @@ from .serializers import (CreateProductSerializer, ViewsProductSerializer, Categ
 def get_products_list(request):
 
     try:
-
         products = Produk.objects.all().order_by('id_produk')
         serializer = ViewsProductSerializer(products, many=True)
+        return render(request, 'dashboard.html', {'products': products})
         return JsonResponse({'data': serializer.data, 'message': 'success', 'error': None, 'status': 200}, safe=False)
+    except Exception as e:
+        return Response({'message': 'error', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['GET'])
+def get_products_list_by_filter(request):
 
+    try:
+        products = Produk.objects.all().order_by('id_produk').filter(status='1')
+        serializer = ViewsProductSerializer(products, many=True)
+        return render(request, 'index.html', {'products': products})
+        return JsonResponse({'data': serializer.data, 'message': 'success', 'error': None, 'status': 200}, safe=False)
     except Exception as e:
         return Response({'message': 'error', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # get detail product
-@api_view(['GET'])
 def get_detail_product(request, pk):
-
     try:
-
         detail = get_object_or_404(Produk, pk=pk)
         serializer = ViewsProductSerializer(detail)
         return Response({'data': serializer.data, 'message': 'success', 'error': 'null', 'status': 200}, status=status.HTTP_200_OK)
@@ -34,70 +44,45 @@ def get_detail_product(request, pk):
         return Response({'message': 'error', 'error': str(e), 'status': 500}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # create an product
-@api_view(['POST'])
 def create_product(request):
-
     if request.method == 'POST':
-
-        try:
-
-            serializer = CreateProductSerializer(data=request.data)
-
-            if serializer.is_valid():
-                serializer.save()
-                return Response({'data': serializer.data, 'message': 'success', 'error': None, 'status': 201}, status=status.HTTP_201_CREATED)
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        except Exception as e:
-            capture_exception(e)
-            return Response({'message': 'error', 'error': str(e), 'status': 500}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        form = ProdukForm(request.POST)
+        if form.is_valid():
+            form.save()
+            sweetify.success(request, 'data produk berhasil ditambahkan')
+            return redirect('/api/v1/products/')
     else:
-        return Response({'message': 'invalid method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        form = ProdukForm()
+
+    return render(request, 'add_product.html', {'form': form})
 
 # delete an product
-@api_view(['DELETE'])
 def delete_product(request, pk):
-
-    if request.method == 'DELETE':
-
         try:
-
             product = get_object_or_404(Produk, pk=pk)
             product.delete()
-            return Response({'message': 'success', 'error': None, 'status': 204}, status=status.HTTP_204_NO_CONTENT)
-
+            return redirect('/api/v1/products/')
+        
         except Exception as e:
             capture_exception(e)
             return Response({'message': 'error', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    else:
-        return Response({'message': 'invalid method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 # update an product
-@api_view(['PUT'])
 def update_product(request, pk):
-
-    if request.method == 'PUT':
-
-        try:
-
-            product = get_object_or_404(Produk, pk=pk)
-            serializer = CreateProductSerializer(product, data=request.data)
-
-            if serializer.is_valid():
-                serializer.save()
-                return Response({'data': serializer.data, 'message': 'success', 'error': None, 'status': 200}, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        except Exception as e:
-            capture_exception(e)
-            return Response({'message': 'error', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+    product = get_object_or_404(Produk, pk=pk)
+    if request.method == 'POST':
+        form = ProdukForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            sweetify.success(request, 'data produk berhasil ditambahkan', timer=2000)
+            return redirect('/api/v1/products/', pk=pk)
+          
     else:
-        return Response({'message': 'invalid method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
+            form = ProdukForm(instance=product)
+            
+    return render(request, 'edit.html', {'product': product,'form':form})
+        
+        
 # get category list
 @api_view(['GET'])
 def get_category_list(request):

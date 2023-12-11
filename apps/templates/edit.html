@@ -1,0 +1,28 @@
+<!-- tambah_produk.html -->
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Edit Produk</title>
+        <link rel="stylesheet" href="{% static "css/add_product.css" %}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body>
+
+    <form method="post" action="{% url 'update_product' pk=product.pk %}">
+        <h2>Edit Data Produk</h2>
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <center>
+        <button type="submit" class="icon-button">
+            <span class="material-icons">save</span>
+            <span class="button-text">Simpan</span>
+        </button>
+    </center>
+        <a href="{% url 'get_products_list' %}" class="custom-btn">Kembali ke Data Produk</a>
+    </form>
+</body>
+</html>
