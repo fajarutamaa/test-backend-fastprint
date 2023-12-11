@@ -140,17 +140,14 @@ p {
 
 .custom-btn-add:hover {
     background-color: #5f50b1;
-    /* Darker red on hover */
 }
 
 .custom-btn-edit:hover {
     background-color: #bbe8bb;
-    /* Darker red on hover */
 }
 
 .custom-btn-delete:hover {
     background-color: #f1d3d3;
-    /* Darker red on hover */
 }
 
 @media only screen and (max-width: 600px) {

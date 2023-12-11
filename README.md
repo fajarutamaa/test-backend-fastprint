@@ -31,7 +31,12 @@ virtualenv venv
 This will create a new `venv` folder in your project directory. Activate the virtual environment with the following command on mac/linux:
 
 ```
-source venv/Scripts/active
+source venv/Scripts/activate 
+```
+or follow command on windows:
+
+```
+venv\Scripts\activate
 ```
 
 Next, install the project dependencies:
