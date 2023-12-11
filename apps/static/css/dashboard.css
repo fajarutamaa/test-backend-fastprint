@@ -141,21 +141,18 @@ p {
 
 .custom-btn-add:hover {
     background-color: #5f50b1;
-    /* Darker red on hover */
 }
 
 .custom-btn-edit:hover {
     background-color: #bbe8bb;
-    /* Darker red on hover */
 }
 
 .custom-btn-delete:hover {
     background-color: #f1d3d3;
-    /* Darker red on hover */
 }
 
 .custom-btn-back {
-    position: fixed;
+    position: relative;
     bottom: 0;
     left: 0;
     display: inline-flex;
@@ -173,8 +170,10 @@ p {
     border-radius: 5px;
     text-decoration: none;
     margin-bottom: 5%;
-    margin-right: 7%;
-    margin-left: 7%;
+}
+
+.custom-btn-back:hover {
+    background-color: #5f50b1;
 }
 
 @media only screen and (max-width: 600px) {
