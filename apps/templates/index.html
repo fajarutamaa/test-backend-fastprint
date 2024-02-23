@@ -3,78 +3,108 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Fast Print Product</title>
-        <link rel="stylesheet" href="{% static "css/index.css" %}">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast Print Product</title>
+    <link rel="stylesheet" href="{% static "css/index.css" %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
     <h1>Data Produk Bertatus Bisa Dijual</h1>
     <p id="currentDateTime">{% now "Y F d H:i:s" %}</p>
+    <div class="search-container">
+        <label for="searchInput">Search:</label>
+        <input type="text" id="searchInput" oninput="searchTable()" placeholder="Search...">
+    </div>
     <table>
-            <thead>
+        <thead>
+            <tr class="table-row">
+                <th>NO </th>
+                <th>ID PRODUK</th>
+                <th>NAMA PRODUK</th>
+                <th>HARGA</th>
+                <th>KATEGORI</th>
+                <th>STATUS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
                 <tr>
-                    <th>NO </th>
-                    <th>ID PRODUK</th>
-                    <th>NAMA PRODUK</th>
-                    <th>HARGA</th>
-                    <th>KATEGORI</th>
-                    <th>STATUS</th>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ product.id_produk }}</td>
+                    <td>{{ product.nama_produk }}</td>
+                    <td>{{ product.harga }}</td>
+                    <td>{{ product.kategori }}</td>
+                    <td>{{ product.status }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                {% for product in products %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ product.id_produk }}</td>
-                        <td>{{ product.nama_produk }}</td>
-                        <td>{{ product.harga }}</td>
-                        <td>{{ product.kategori }}</td>
-                        <td>{{ product.status }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="7" class="no-record">No Record Found!</td>
-                    </tr>
-                    {% endfor %}  
-                </tbody>  
-            </table>  
-            <br>  
-            <br>  
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="no-record">No Record Found!</td>
+                </tr>
+            {% endfor %}  
+        </tbody>  
+    </table>  
+    <br>  
+    <br>  
             
-            <center>
-                <a href="/api/v1/products/" class="custom-btn-add">
-                    <span class="material-icons">arrow_right_alt</span>
-                    Lihat selengkapnya
-                </a>
-            </center>
+    <center>
+        <a href="/api/v1/products/" class="custom-btn-add">
+            <span class="material-icons">arrow_right_alt</span>
+            Lihat selengkapnya
+        </a>
+    </center>
 
-            <script>
-                function updateDateTime() {
-                    var currentDate = new Date()
-                    currentDate.setUTCHours(currentDate.getUTCHours() + 7)
-                    var months = [
-                    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'Nopember', 'Desember'
-                    ]
-                    
-                    var formattedDateTime =
-                        ('0' + currentDate.getUTCDate()).slice(-2) + ' ' +
-                        months[currentDate.getUTCMonth()] + ' ' +
-                        currentDate.getUTCFullYear() + ' pukul ' +
-                        ('0' + currentDate.getUTCHours()).slice(-2) + ':' +
-                        ('0' + currentDate.getUTCMinutes()).slice(-2) + ':' +
-                        ('0' + currentDate.getUTCSeconds()).slice(-2)
-        
-                    document.getElementById('currentDateTime').innerText = formattedDateTime
+    <script>
+        function updateDateTime() {
+            var currentDate = new Date();
+            currentDate.setUTCHours(currentDate.getUTCHours() + 7);
+            var months = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'Nopember', 'Desember'
+            ];
+
+            var formattedDateTime =
+                ('0' + currentDate.getUTCDate()).slice(-2) + ' ' +
+                months[currentDate.getUTCMonth()] + ' ' +
+                currentDate.getUTCFullYear() + ' pukul ' +
+                ('0' + currentDate.getUTCHours()).slice(-2) + ':' +
+                ('0' + currentDate.getUTCMinutes()).slice(-2) + ':' +
+                ('0' + currentDate.getUTCSeconds()).slice(-2);
+
+            document.getElementById('currentDateTime').innerText = formattedDateTime;
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        function searchTable() {
+            // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.querySelector("table");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those that don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td");
+                var found = false;
+                for (var j = 0; j < td.length; j++) {
+                    txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        found = true;
+                        break;
+                    }
                 }
-                setInterval(updateDateTime, 1000)
-                updateDateTime()
-            </script>
-        
-            </body>  
-            </html>  
+                if (found) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>  
+</html>
